@@ -2,7 +2,7 @@
 # post-merge · afiladocs
 #
 # Histórico: llamaba al reusable
-#   Iniciativas-Alexendros/plantillas/.github/workflows/_lib-post-merge.yml
+#   Soluciones-Alexendros/plantillas/.github/workflows/_lib-post-merge.yml
 #   @093b65aa1cf97c0d96bd7edcd322aa2d7d667424
 # Ese repositorio ya no es resoluble (404 / "Could not resolve to a Repository").
 # GitHub aborta el run en 0 s sin jobs (startup_failure) si el `uses:` no existe.
@@ -43,13 +43,13 @@ jobs:
           STATUS="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 \
             -H 'Accept: application/vnd.github+json' \
             -H 'X-GitHub-Api-Version: 2022-11-28' \
-            https://api.github.com/repos/Iniciativas-Alexendros/plantillas \
+            https://api.github.com/repos/Soluciones-Alexendros/plantillas \
             || true)"
           {
             echo "## post-merge no-op"
             echo
-            echo "El reusable \`Iniciativas-Alexendros/plantillas\` no está disponible."
-            echo "GET /repos/Iniciativas-Alexendros/plantillas → HTTP \`${STATUS}\`."
+            echo "El reusable \`Soluciones-Alexendros/plantillas\` no está disponible."
+            echo "GET /repos/Soluciones-Alexendros/plantillas → HTTP \`${STATUS}\`."
             echo
             echo "Este job completa en verde a propósito para no marcar main en rojo"
             echo "hasta que el repo de plantillas se restaure o se invendore el reusable."
