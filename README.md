@@ -16,35 +16,35 @@ Contratos: [AGENTS.md](AGENTS.md) · [ARCHITECTURE.md](ARCHITECTURE.md) ·
 [SUPPORT.md](SUPPORT.md) · [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) ·
 [DECISIONS.md](DECISIONS.md).
 
-|             |                                                                                                      |
-| ----------- | ---------------------------------------------------------------------------------------------------- |
-| **Estado**  | P0 — frontal 500 por env Supabase incompleta ([issue #59](https://github.com/Iniciativas-Alexendros/saas-afiladocs/issues/59), [PRODUCCION-P0.md](PRODUCCION-P0.md)) |
-| **Dominio** | [afiladocs.com](https://afiladocs.com)                                                               |
-| **Stack**   | Next.js 15 · React 19 · TypeScript 5.8 · Tailwind v4 · Prisma 7 · Stripe · Supabase · DocuSeal · n8n |
+|             |                                                                                                                                                                     |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Estado**  | P0 — frontal 500 por env Supabase incompleta ([issue #59](https://github.com/Soluciones-Alexendros/saas-afiladocs/issues/59), [PRODUCCION-P0.md](PRODUCCION-P0.md)) |
+| **Dominio** | [afiladocs.com](https://afiladocs.com)                                                                                                                              |
+| **Stack**   | Next.js 15 · React 19 · TypeScript 5.8 · Tailwind v4 · Prisma 7 · Stripe · Supabase · DocuSeal · n8n                                                                |
 
 ---
 
 ## Desarrollo
 
 ```bash
-git clone git@github.com:Iniciativas-Alexendros/saas-afiladocs.git && cd saas-afiladocs
+git clone git@github.com:Soluciones-Alexendros/saas-afiladocs.git && cd saas-afiladocs
 pnpm install && cp .env.example .env.local && pnpm dev
 ```
 
 ### Comandos
 
-| Comando              | Uso                                          |
-| -------------------- | -------------------------------------------- |
-| `pnpm dev`           | Turbopack dev server `:3000`                 |
-| `pnpm run build`     | Build producción (`.next`)                   |
-| `pnpm run typecheck` | `tsc --noEmit`                               |
-| `pnpm run lint`      | ESLint 9 flat config                         |
-| `pnpm run test`      | Vitest                                       |
+| Comando                  | Uso                                      |
+| ------------------------ | ---------------------------------------- |
+| `pnpm dev`               | Turbopack dev server `:3000`             |
+| `pnpm run build`         | Build producción (`.next`)               |
+| `pnpm run typecheck`     | `tsc --noEmit`                           |
+| `pnpm run lint`          | ESLint 9 flat config                     |
+| `pnpm run test`          | Vitest                                   |
 | `pnpm run test:coverage` | Vitest + coverage (gate ≥ 70 % críticos) |
-| `pnpm run smoke`     | `GET /api/health` sobre `next start`         |
-| `pnpm run test:e2e`  | Playwright Chromium                          |
-| `make validate`      | lint + test + build + smoke                  |
-| `pnpm run ci:local`  | Alias de `validate`                          |
+| `pnpm run smoke`         | `GET /api/health` sobre `next start`     |
+| `pnpm run test:e2e`      | Playwright Chromium                      |
+| `make validate`          | lint + test + build + smoke              |
+| `pnpm run ci:local`      | Alias de `validate`                      |
 
 CI principal: jobs `quality`, `test`, `build`, `smoke` (más `security` de producto).
 
@@ -58,13 +58,13 @@ El edge middleware (`middleware.ts` → `createServerClient`) exige **ambas** en
 
 Obligatorias en Vercel **Production** para que el frontal no muera en edge:
 
-| Variable | Rol |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto **Marketplace** (`*.supabase.co`). `supabase.afiladocs.com` está descatalogado |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave anónima (pública; RLS). **Ausente en prod el 2026-09-23 — issue #59** |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only (Storage / ops). No `NEXT_PUBLIC_*` |
-| `DATABASE_URL` | Pooler Prisma (runtime) |
-| `DIRECT_URL` | Conexión directa (migraciones) |
+| Variable                        | Rol                                                                                             |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | URL del proyecto **Marketplace** (`*.supabase.co`). `supabase.afiladocs.com` está descatalogado |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave anónima (pública; RLS). **Ausente en prod el 2026-09-23 — issue #59**                     |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Server-only (Storage / ops). No `NEXT_PUBLIC_*`                                                 |
+| `DATABASE_URL`                  | Pooler Prisma (runtime)                                                                         |
+| `DIRECT_URL`                    | Conexión directa (migraciones)                                                                  |
 
 Path canónico: **Vercel Marketplace Free** linkado al proyecto `afiladocs`. El código **no inventa** estas claves; las inyecta el Marketplace al linkar. No hay VPS / self-hosted.
 

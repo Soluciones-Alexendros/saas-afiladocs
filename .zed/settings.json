@@ -1,0 +1,8 @@
+{
+  "context_servers": {
+    "shadcn-mcp-server": {
+      "enabled": true,
+      "settings": {}
+    }
+  }
+}

@@ -21,28 +21,28 @@ Las variables se agrupan por el papel que cumplen. Columnas:
 - **Preview** → deploys de rama en Vercel. Valores reales de entorno `preview`.
 - **Prod** → `main` en Vercel, valores reales de entorno `production`.
 
-| Variable | Local | CI | Preview | Prod |
-|---|:-:|:-:|:-:|:-:|
-| `DATABASE_URL` (pooler 6543) | real | placeholder | real | real |
-| `DIRECT_URL` (5432, sólo migrate) | real | placeholder | real | real |
-| `NEXT_PUBLIC_SUPABASE_URL` | real | placeholder | real | real |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | real | placeholder | real | real |
-| `SUPABASE_SERVICE_ROLE_KEY` | real | placeholder | real | real |
-| `STRIPE_SECRET_KEY` (`sk_test_*` en preview) | test | placeholder | test | **live** |
-| `STRIPE_WEBHOOK_SECRET` | test | placeholder | test | **live** |
-| `RESEND_API_KEY` | real | placeholder | real | real |
-| `RESEND_FROM_EMAIL` | opt | — | opt | opt |
-| `DOCUSEAL_API_URL` / `_API_KEY` / `_WEBHOOK_SECRET` | opt | — | opt | real |
-| `EASYVERIFACTU_API_URL` / `_API_KEY` | opt | — | opt | real |
-| `N8N_CONTACT_WEBHOOK_URL` | opt | — | opt | real |
-| `N8N_ALERTS_WEBHOOK_SECRET` | opt | — | opt | real |
-| `N8N_ERROR_WEBHOOK_URL` | opt | — | opt | real |
-| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | opt | — | opt | real |
-| `CRON_SECRET` | opt | placeholder | opt | **real** |
-| `OPS_EMAIL` | opt | — | opt | real |
-| `GEO_BLOCKED_COUNTRIES` | opt | — | opt | opt |
-| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` | `https://afiladocs.com` | **no definir** (noindex) | `https://afiladocs.com` |
-| `OBSERVABILITY_SENTRY_AUTH_TOKEN` | — | — | auto | auto |
+| Variable                                            |          Local          |           CI            |         Preview          |          Prod           |
+| --------------------------------------------------- | :---------------------: | :---------------------: | :----------------------: | :---------------------: |
+| `DATABASE_URL` (pooler 6543)                        |          real           |       placeholder       |           real           |          real           |
+| `DIRECT_URL` (5432, sólo migrate)                   |          real           |       placeholder       |           real           |          real           |
+| `NEXT_PUBLIC_SUPABASE_URL`                          |          real           |       placeholder       |           real           |          real           |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY`                     |          real           |       placeholder       |           real           |          real           |
+| `SUPABASE_SERVICE_ROLE_KEY`                         |          real           |       placeholder       |           real           |          real           |
+| `STRIPE_SECRET_KEY` (`sk_test_*` en preview)        |          test           |       placeholder       |           test           |        **live**         |
+| `STRIPE_WEBHOOK_SECRET`                             |          test           |       placeholder       |           test           |        **live**         |
+| `RESEND_API_KEY`                                    |          real           |       placeholder       |           real           |          real           |
+| `RESEND_FROM_EMAIL`                                 |           opt           |            —            |           opt            |           opt           |
+| `DOCUSEAL_API_URL` / `_API_KEY` / `_WEBHOOK_SECRET` |           opt           |            —            |           opt            |          real           |
+| `EASYVERIFACTU_API_URL` / `_API_KEY`                |           opt           |            —            |           opt            |          real           |
+| `N8N_CONTACT_WEBHOOK_URL`                           |           opt           |            —            |           opt            |          real           |
+| `N8N_ALERTS_WEBHOOK_SECRET`                         |           opt           |            —            |           opt            |          real           |
+| `N8N_ERROR_WEBHOOK_URL`                             |           opt           |            —            |           opt            |          real           |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN`                 |           opt           |            —            |           opt            |          real           |
+| `CRON_SECRET`                                       |           opt           |       placeholder       |           opt            |        **real**         |
+| `OPS_EMAIL`                                         |           opt           |            —            |           opt            |          real           |
+| `GEO_BLOCKED_COUNTRIES`                             |           opt           |            —            |           opt            |           opt           |
+| `NEXT_PUBLIC_SITE_URL`                              | `http://localhost:3000` | `https://afiladocs.com` | **no definir** (noindex) | `https://afiladocs.com` |
+| `OBSERVABILITY_SENTRY_AUTH_TOKEN`                   |            —            |            —            |           auto           |          auto           |
 
 Fuente canónica: [src/lib/env.ts](../src/lib/env.ts). El script [scripts/check-env-example.ts](../scripts/check-env-example.ts) valida en CI que cada variable referenciada ahí esté en [.env.example](../.env.example). En Preview/Prod, las vars de Supabase y Prisma las inyecta **Vercel Marketplace Free** al linkar el recurso al proyecto `afiladocs` (no self-hosted, no VPS).
 
@@ -64,17 +64,17 @@ Si el PR toca el esquema Prisma: además `npx prisma migrate dev` contra BD loca
 
 El workflow [.github/workflows/ci.yml](../.github/workflows/ci.yml) es la fuente única de verdad. Jobs actuales:
 
-| Job | Qué ejecuta | Detecta |
-|---|------|---------|
-| `quality` | `check:env`, `typecheck`, `lint`, `pnpm audit` informativo | Env sin documentar, tipos, ESLint, advisories |
-| `test` | `test:coverage` + artefacto `coverage/` | Regresiones unitarias + umbrales de cobertura |
-| `build` | `next build` + artefacto `.next` | Rutas App Router rotas, RSC mal tipados, CSP, bundles |
-| `smoke` | `pnpm run smoke` sobre el artefacto (`GET /api/health`) | Runtime mínimo no arranca o health no responde `ok` |
-| `security` | actionlint + zizmor | Workflows inseguros (job de producto, no se renombra) |
+| Job        | Qué ejecuta                                                | Detecta                                               |
+| ---------- | ---------------------------------------------------------- | ----------------------------------------------------- |
+| `quality`  | `check:env`, `typecheck`, `lint`, `pnpm audit` informativo | Env sin documentar, tipos, ESLint, advisories         |
+| `test`     | `test:coverage` + artefacto `coverage/`                    | Regresiones unitarias + umbrales de cobertura         |
+| `build`    | `next build` + artefacto `.next`                           | Rutas App Router rotas, RSC mal tipados, CSP, bundles |
+| `smoke`    | `pnpm run smoke` sobre el artefacto (`GET /api/health`)    | Runtime mínimo no arranca o health no responde `ok`   |
+| `security` | actionlint + zizmor                                        | Workflows inseguros (job de producto, no se renombra) |
 
 `concurrency: ci-<ref>` con `cancel-in-progress: true` cancela runs anteriores de la misma rama cuando llega un push nuevo.
 
-**Runner:** `ubuntu-latest` (GitHub-hosted). El label `[self-hosted, ts]` se retiró porque el runner de la org no estaba online y los jobs quedaban en cola indefinida (p. ej. [run 35818279495](https://github.com/Iniciativas-Alexendros/saas-afiladocs/actions/runs/35818279495)). No volver a `self-hosted` hasta confirmar un runner registrado con esas labels.
+**Runner:** `ubuntu-latest` (GitHub-hosted). El label `[self-hosted, ts]` se retiró porque el runner de la org no estaba online y los jobs quedaban en cola indefinida (p. ej. [run 35818279495](https://github.com/Soluciones-Alexendros/saas-afiladocs/actions/runs/35818279495)). No volver a `self-hosted` hasta confirmar un runner registrado con esas labels.
 
 **Regla**: si este workflow cambia, esta tabla cambia en el mismo PR.
 
@@ -93,14 +93,14 @@ El workflow [.github/workflows/ci.yml](../.github/workflows/ci.yml) es la fuente
 
 Registro vivo. Cuando CI falle por un motivo no listado aquí, añade la entrada en el mismo PR que lo corrige.
 
-| Síntoma | Causa | Remedio |
-|---|---|---|
-| `prisma.config.ts: define DIRECT_URL o DATABASE_URL` en `npm ci` | `postinstall` corre `prisma generate` y falta env | En CI: placeholder en `env:` del job (ya aplicado). En local: poblar `.env.local` |
-| `MISSING DEPENDENCY @vitest/coverage-v8` | Vitest 4 no lo incluye transitivamente | Añadir `@vitest/coverage-v8` a `devDependencies` con la **misma versión** que `vitest` |
-| `Missing required environment variable: X` en build de Vercel | Env nueva en `src/lib/env.ts` sin añadir al proyecto Vercel | Añadir a Preview + Prod desde el dashboard, redeploy |
-| CSP bloquea script en prod | `script-src` sin el nonce correcto tras cambio en [next.config.ts](../next.config.ts) | Ver `guias/guia-seguridad.md` § CSP nonce |
-| Webhook Stripe firma inválida | `STRIPE_WEBHOOK_SECRET` apunta al endpoint equivocado | [runbooks/stripe-webhook-fallido.md](runbooks/stripe-webhook-fallido.md) |
-| Build Vercel OK pero preview/prod 500 en `/` (`MIDDLEWARE_INVOCATION_FAILED`) | Falta `NEXT_PUBLIC_SUPABASE_ANON_KEY` (o URL); Marketplace no está linkado a `afiladocs` | Linkar **Supabase Free Plan** al proyecto y redesplegar. No inventar JWT. Ver [issue #59](https://github.com/Iniciativas-Alexendros/saas-afiladocs/issues/59) y [PRODUCCION-P0.md](../PRODUCCION-P0.md). |
+| Síntoma                                                                       | Causa                                                                                    | Remedio                                                                                                                                                                                                 |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prisma.config.ts: define DIRECT_URL o DATABASE_URL` en `npm ci`              | `postinstall` corre `prisma generate` y falta env                                        | En CI: placeholder en `env:` del job (ya aplicado). En local: poblar `.env.local`                                                                                                                       |
+| `MISSING DEPENDENCY @vitest/coverage-v8`                                      | Vitest 4 no lo incluye transitivamente                                                   | Añadir `@vitest/coverage-v8` a `devDependencies` con la **misma versión** que `vitest`                                                                                                                  |
+| `Missing required environment variable: X` en build de Vercel                 | Env nueva en `src/lib/env.ts` sin añadir al proyecto Vercel                              | Añadir a Preview + Prod desde el dashboard, redeploy                                                                                                                                                    |
+| CSP bloquea script en prod                                                    | `script-src` sin el nonce correcto tras cambio en [next.config.ts](../next.config.ts)    | Ver `guias/guia-seguridad.md` § CSP nonce                                                                                                                                                               |
+| Webhook Stripe firma inválida                                                 | `STRIPE_WEBHOOK_SECRET` apunta al endpoint equivocado                                    | [runbooks/stripe-webhook-fallido.md](runbooks/stripe-webhook-fallido.md)                                                                                                                                |
+| Build Vercel OK pero preview/prod 500 en `/` (`MIDDLEWARE_INVOCATION_FAILED`) | Falta `NEXT_PUBLIC_SUPABASE_ANON_KEY` (o URL); Marketplace no está linkado a `afiladocs` | Linkar **Supabase Free Plan** al proyecto y redesplegar. No inventar JWT. Ver [issue #59](https://github.com/Soluciones-Alexendros/saas-afiladocs/issues/59) y [PRODUCCION-P0.md](../PRODUCCION-P0.md). |
 
 ## 6. Política de merge
 

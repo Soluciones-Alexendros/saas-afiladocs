@@ -1,6 +1,6 @@
 # PRODUCCION-P0 — Producción caída
 
-Incidente: [issue #59](https://github.com/Iniciativas-Alexendros/saas-afiladocs/issues/59).
+Incidente: [issue #59](https://github.com/Soluciones-Alexendros/saas-afiladocs/issues/59).
 
 ## Decisión de owner (2026-09-23)
 
