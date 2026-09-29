@@ -18,6 +18,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "seed:products": "tsx scripts/seed-products.ts",
+    "audit:catalog": "tsx scripts/audit-catalog.ts",
     "postinstall": "prisma generate",
     "prepare": "husky",
     "analyze": "ANALYZE=true next build",
